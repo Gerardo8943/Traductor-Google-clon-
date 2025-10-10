@@ -1,28 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Traductor Google</title>
+
+    <!-- Fuentes y Material Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400&display=swap" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!--CSS -->
     <link rel="stylesheet" href="style.css">
+</head>
 
 <body>
 
     <div class="container">
 
         <!-- Header -->
-
         <header class="header">
             <div class="header-content">
-
                 <div class="logo">
-                    <span class="material-symbols-outlined">
-                        menu
-                    </span>
+                    <span class="material-symbols-outlined">menu</span>
                     <span class="google-g">G</span>
                     <span class="google-o1">o</span>
                     <span class="google-o2">o</span>
@@ -31,17 +32,15 @@
                     <span class="google-e">e</span>
                     <span class="traductor">Traductor</span>
                 </div>
-
             </div>
         </header>
 
-
-        <!-- Selector -->
+        <!-- Selector de idiomas -->
         <section class="language-selection">
             <div class="source-language">
                 <select id="sourceLanguage">
                     <option value="auto" selected>Detectar idioma</option>
-                    <option value="es" selected>Español</option>
+                    <option value="es">Español</option>
                     <option value="en">Inglés</option>
                     <option value="fr">Francés</option>
                     <option value="de">Alemán</option>
@@ -61,21 +60,16 @@
                     <option value="th">Tailandés</option>
                     <option value="id">Indonesio</option>
                 </select>
-
             </div>
 
-            <button class="swap-languages icon-button" id="swapLanguages">
-                <span class="material-symbols-outlined">
-                    swap_horiz
-                </span>
-
+            <button class="swap-languages icon-button" id="swapLanguages" title="Intercambiar idiomas">
+                <span class="material-symbols-outlined">swap_horiz</span>
             </button>
 
-            <div class="source-language">
-                <select id="sourceLanguage">
-                    <option value="auto" selected>Detectar idioma</option>
-                    <option value="es" selected>Español</option>
-                    <option value="en">Inglés</option>
+            <div class="target-language">
+                <select id="targetLanguage">
+                    <option value="es">Español</option>
+                    <option value="en" selected>Inglés</option>
                     <option value="fr">Francés</option>
                     <option value="de">Alemán</option>
                     <option value="it">Italiano</option>
@@ -94,45 +88,45 @@
                     <option value="th">Tailandés</option>
                     <option value="id">Indonesio</option>
                 </select>
-
             </div>
         </section>
 
-        <!-- Textarea -->
-
+        <!-- Área de traducción -->
         <main class="translation-area">
 
+            <!-- Sección de entrada -->
             <section class="input-section">
-
                 <div class="textarea-container">
-
-                    <textarea id="inputTexr" placeholder="Introduce el texto" maxlength="5000">
-
-                    </textarea>
-
-                    <!--Button para borrar el contenido-->
+                    <textarea id="inputText" placeholder="Introduce el texto" maxlength="5000"></textarea>
 
                     <footer class="input-controls">
-                        <button class="icon-button mic-button" id="micButton">
-                            <span class="material-symbols-outlined">
-                                mic
-                            </span>
+                        <button class="icon-button mic-button" id="micButton" title="Hablar">
+                            <span class="material-symbols-outlined">mic</span>
+                        </button>
+                    
+                    </footer>
+                </div>
+            </section>
 
+            <!-- Output -->
+            <section class="output-section">
+                <div class="textarea-container">
+                    <div id="outputText" aria-live="polite"></div>
+
+                    <footer class="output-controls">
+                        <button class="icon-button copy-button" id="copyButton" title="Copiar texto">
+                            <span class="material-symbols-outlined">content_copy</span>
+                        </button>
+
+                        <button class="icon-button speaker-button" id="speakerButton" title="Escuchar">
+                            <span class="material-symbols-outlined">volume_up</span>
                         </button>
                     </footer>
-
-
-
                 </div>
-
             </section>
 
         </main>
-
-        </main>
-
     </div>
-
 
 </body>
 
