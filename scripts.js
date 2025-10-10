@@ -2,7 +2,6 @@ import { $ } from "./dom.js";
 
 class GoogleTranslator {
   static SUPPORTED_LANGUAGES = [
-    "auto",
     "es",
     "en",
     "fr",
@@ -45,5 +44,23 @@ class GoogleTranslator {
     th: "th-TH",
     id: "id-ID",
   };
+
+  static DEFAULT_SOURCE_LANGUAGE = "es";
+  static DEFAULT_TARGET_LANGUAGE = "en";
+
+  constructor(){
+    this.init()
+    this.setupEventListeners()
+
+    this.currentTranslator = null;
+    this.currentDetector = null;
+  }
+
+  //Recuperamos los elementos del DOM
+  init(){
+
+  }
 }
+
+const googleTranslator = new GoogleTranslator();
 
