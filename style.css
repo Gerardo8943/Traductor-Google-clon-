@@ -261,3 +261,39 @@ select:focus {
     width: 100%;
   }
 }
+
+.loading{
+  color: var(--text-secondary);
+  font-style: normal;
+}
+
+.dots::after{
+   content: '';
+  display: inline-block;
+  width: 1ch;
+  animation: dots 1.5s steps(3, end) infinite;
+}
+
+
+@keyframes dots {
+  0%, 20% { content: ''; }
+  40% { content: '.'; }
+  60% { content: '..'; }
+  80%, 100% { content: '...'; }
+}
+
+.error {
+  color: var(--color-error);
+  font-weight: 500;
+}
+
+.mic-button.listening {
+  color: var(--google-red);
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
