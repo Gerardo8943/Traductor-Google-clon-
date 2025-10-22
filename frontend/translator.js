@@ -1,12 +1,11 @@
 import { $, $$ } from "./dom.js";
 
-
 //Clase principal del traductor donde se manejan todas las funcionalidades
 class GoogleTranslator {
   static FULL_LANGUAGE_CODES = {
     auto: "auto",
-    af: "af", 
-    sq: "sq", 
+    af: "af",
+    sq: "sq",
     am: "am",
     ar: "ar",
     hy: "hy",
@@ -110,7 +109,6 @@ class GoogleTranslator {
     zu: "zu",
   };
 
-
   //Metodo constructor para las funcionalidades del traductor
   constructor() {
     this.inputText = $("#inputText");
@@ -129,36 +127,40 @@ class GoogleTranslator {
   }
 
   //Configuración de los eventos para los elementos del DOM
-  setupEventListeners(){
+  setupEventListeners() {
     let typingTimer;
-    this.inputText.addEventListener('input',() =>{
-      clearTimeout (typingTimer);
+    this.inputText.addEventListener("input", () => {
+      clearTimeout(typingTimer);
       this.showTranslating();
-      typingTimer = setTimeout(() => this.translate(), 600 );
+      typingTimer = setTimeout(() => this.translate(), 600);
     });
 
-    this.sourceLanguage.addEventListener("change", () => this.handleLangChange());
-    this.targetLanguage.addEventListener("change", () => this.handleLangChange());
+    this.sourceLanguage.addEventListener("change", () =>
+      this.handleLangChange()
+    );
+    this.targetLanguage.addEventListener("change", () =>
+      this.handleLangChange()
+    );
 
     this.swapLanguages.addEventListener("click", () => this.swapLangs());
     this.copyButton.addEventListener("click", () => this.copyOutput());
     this.speakerButton.addEventListener("click", () => this.speakText());
     this.micButton.addEventListener("click", () => this.toggleMic());
   }
-  handleLangChange(){
-    if(this.inputText.value.trim()){
-       this.showTranslating();
+  handleLangChange() {
+    if (this.inputText.value.trim()) {
+      this.showTranslating();
       this.translate();
     }
   }
 
-  showTranslating(){
+  showTranslating() {
     this.outputText.innerHTML = `<span class="loading">Traduciendo<span class="dots">...</span></span>`;
   }
 
-  async translate(){
+  async translate() {
     const text = this.inputText.value.trim();
-    if(!text){
+    if (!text) {
       this.outputText.textContent = "";
       return;
     }
@@ -166,27 +168,46 @@ class GoogleTranslator {
     const from = this.sourceLanguage.value;
     const to = this.targetLanguage.value;
 
-    try{
+    try {
       //Endpoint Api de Google Translate
-      const response = await fetch(
-        `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&q=${encodeURIComponent(text)}`
-      );
-  const data = await response.json();
-      const translated = data[0]?.map(item => item[0]).join("") || "Error al traducir";
+      const response = await fetch("http://localhost:5000/api/translate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text,
+          sourceLanguage: from,
+          targetLanguage: to,
+        }),
+      });
 
-      this.outputText.textContent = translated;
+      if (!response.ok) {
+        throw new Error("Error al conectar con el servidor");
+      }
+
+      const data = await response.json();
+      this.outputText.textContent = data.translatedText || "Error al traducir";
     } catch (error) {
       console.error("Error en la traducción:", error);
-      this.outputText.innerHTML = `<span class="error">⚠️ No se pudo traducir. Intenta nuevamente.</span>`;
+      this.outputText.innerHTML = `<span class="error"> No se pudo traducir. Intenta nuevamente.</span>`;
     }
   }
 
   swapLangs() {
-    const temp = this.sourceLanguage.value;
-    this.sourceLanguage.value = this.targetLanguage.value;
-    this.targetLanguage.value = temp;
+    let from = this.sourceLanguage.value;
+    let to = this.targetLanguage.value;
 
-    if (this.inputText.value.trim()) {
+    let newFrom = to;
+
+    let newTo = from === "auto" ? (to === "es" ? "en" : "es") : from;
+
+    this.sourceLanguage.value = newFrom;
+    this.targetLanguage.value = newTo;
+
+    const translatedText = this.outputText.textContent.trim();
+    if (translatedText) {
+      this.inputText.value = translatedText;
       this.showTranslating();
       this.translate();
     }
@@ -222,7 +243,8 @@ class GoogleTranslator {
     }
 
     if (!this.recognition) {
-      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const Recognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
       this.recognition = new Recognition();
       this.recognition.lang = this.sourceLanguage.value || "es";
       this.recognition.interimResults = false;
