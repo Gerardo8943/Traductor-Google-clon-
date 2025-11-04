@@ -1,5 +1,25 @@
 import { $, $$ } from "./dom.js";
 
+//Modo oscuro del traductor
+
+const themeToggle = document.getElementById('themeToggle');
+
+// Guardar el tema en localStorage
+if (localStorage.getItem('theme') === 'dark') {
+  document.documentElement.setAttribute('data-theme', 'dark');
+}
+
+themeToggle.addEventListener('click', () => {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  if (currentTheme === 'dark') {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('theme', 'light');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+  }
+});
+
 //Clase principal del traductor donde se manejan todas las funcionalidades
 class GoogleTranslator {
   static FULL_LANGUAGE_CODES = {
